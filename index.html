@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terra Nova</title>
+
+    <link rel="shortcut icon"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTIiIHk9IjQiIHdpZHRoPSI4IiBoZWlnaHQ9IjI0IiBmaWxsPSIjM0I4MkY2Ii8+CjxyZWN0IHg9IjEwIiB5PSIyIiB3aWR0aD0iMTIiIGhlaWdodD0iMiIgZmlsbD0iIzFFNDBBRiIvPgo8cmVjdCB4PSI4IiB5PSIyOCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIiIGZpbGw9IiMxRTQwQUYiLz4KPC9zdmc+Cg=="
+        type="image/svg+xml"> 
+
+    <link rel="shortcut icon" type="image/svg+xml" href="./img/faviconLight.svg"
+        media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" type="image/svg+xml" href="./img/faviconDark.svg" media="(prefers-color-scheme: dark)" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            background-color: #FFFED0;
+            overflow-y: scroll;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            user-select: none;
+        }
+
+        header,
+        section,
+        footer {
+            width: 100%;
+        }
+
+        :root {
+            --white: #fff;
+            --dark: #231f20;
+            --green: #5ba241;
+            --overlay: rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --header-height: 100px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FFFED0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #5ba241;
+            border-radius: 10px;
+            border: 2px solid #FFFED0;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #4c8836;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #5ba241 #FFFED0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .header.scrolled {
+            background: var(--green);
+        }
+
+        .header__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header__logo {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header__logo img {
+            height: 70px;
+            transition: height 0.3s;
+        }
+
+        .nav-group {
+            display: flex;
+            align-items: center;
+            background: var(--green);
+        }
+
+        .nav-group--wide {
+            border-radius: 25px;
+            padding: 0.5rem 0.5rem;
+        }
+
+        .nav-group--narrow {
+            border-radius: 40px;
+            padding: 0.3rem 0.5rem;
+        }
+
+        .header__links {
+            display: flex;
+            gap: 2rem;
+            font-size: 1.2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header__links a {
+            color: #fff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .header__links a:hover {
+            color: #dfffe2;
+        }
+
+        /* Language switch button */
+        .lang-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .lang-switch button {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch button:hover {
+            background: #dfffe2;
+            color: var(--green);
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Slider */
+        .section-slider {
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .section-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .section-slide {
+            flex: 0 0 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(91, 162, 65, 0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background: rgba(91, 162, 65, 0.9);
+        }
+
+        .nav-btn.left {
+            left: 10px;
+        }
+
+        .nav-btn.right {
+            right: 10px;
+        }
+
+        .dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #fff;
+        }
+
+        /* Анімації появи */
+        .animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .animate.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Home */
+        .home__slide {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .home__slide__image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .home__slide__image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .home__slide__text {
+            position: absolute;
+            color: var(--white);
+            padding: 1.5rem;
+            max-width: 90%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        /* Стилі тільки для секції Destinations */
+        .home__slide__text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .home__slide__text p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0 auto;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .section-slide:nth-child(3) .home__slide__text {
+            max-width: 90%;
+        }
+
+        /* Residence */
+        .residence {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            padding-block: var(--header-height);
+            overflow: hidden;
+            background: #FFFED0;
+        }
+
+        .residence__container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            row-gap: 2rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .residence__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .residence__text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            order: 2;
+        }
+
+        .residence__text .heading {
+            font-size: 1.8rem;
+            color: #231f20;
+            text-align: center;
+        }
+
+        .residence__text .text {
+            line-height: 1.5em;
+            font-size: 1rem;
+            color: #231f20;
+            text-align: center;
+        }
+
+        .residence__image {
+            width: 100%;
+            max-width: 400px;
+            flex-shrink: 0;
+            order: 1;
+        }
+
+        /* Destinations */
+        .destinations {
+            min-height: 100vh;
+            padding: 80px 1rem;
+            background: url("https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/image-374822222.jpg") center/cover no-repeat;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .destinations .animate {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            max-width: 90%;
+        }
+
+        .destinations h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .destinations p {
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 100%;
+            margin: 0 auto;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Activities */
+        .activities {
+            padding: 80px 20px;
+            background: #FFFED0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .cards-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .card-container {
+            width: 280px;
+            height: 380px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-front {
+            position: relative;
+        }
+
+        .card_caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--green);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .card-back {
+            background: #92E6B8;
+            color: #18860F;
+            transform: rotateY(180deg);
+            padding: 15px;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        .card-back-content {
+            text-align: center;
+        }
+
+        .card-back-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .card-back-content p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Fotos */
+        .fotos img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Join */
+        .join {
+            padding: 80px 20px;
+            background: url("https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/parnassus-greece%20(1)%201.png") center/cover no-repeat;
+            color: #fff;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .join::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .join__content {
+            position: relative;
+            max-width: 90%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form input,
+        .form textarea {
+            padding: 12px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background: #fff;
+            color: #000;
+            font-size: 1rem;
+        }
+
+        .form button {
+            background: var(--green);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            max-width: 90%;
+            width: 100%;
+        }
+
+        .modal-content h2 {
+            color: var(--green);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .modal-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-content button {
+            margin-top: 1rem;
+            padding: 10px 20px;
+            border: none;
+            background: var(--green);
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: #FFFED0;
+            padding: 40px 20px;
+        }
+
+        .footer__content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer__col {
+            width: 100%;
+        }
+
+        .footer__logo img {
+            width: 100px;
+        }
+
+        .footer__links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer__links li {
+            margin: 8px 0;
+        }
+
+        .footer__links a {
+            color: var(--dark);
+            transition: 0.3s;
+        }
+
+        .footer__links a:hover {
+            color: var(--green);
+        }
+
+        .footer__links.social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .footer__links.social a {
+            font-size: 1.8rem;
+            color: #18860F;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        /* Scroll to top */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            background: var(--green);
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+            z-index: 1100;
+        }
+
+        #scrollTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #scrollTopBtn:hover {
+            background: #4c8836;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 1024px) {
+            :root {
+                --header-height: 80px;
+            }
+
+            .header__logo img {
+                height: 60px;
+            }
+
+            .header__links {
+                gap: 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                height: 70px;
+            }
+
+            .header__container {
+                padding: 0 0.5rem;
+            }
+
+            .header__logo img {
+                height: 50px;
+            }
+
+            .nav-group--wide, 
+            .nav-group--narrow {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--green);
+                z-index: 1000;
+                transition: right 0.3s ease;
+                padding: 80px 20px 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .mobile-menu.active {
+                right: 0;
+            }
+
+            .mobile-menu .header__links {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .mobile-menu .header__links a {
+                font-size: 1.3rem;
+                display: block;
+                padding: 10px 0;
+            }
+
+            .mobile-menu .lang-switch {
+                margin-top: 2rem;
+            }
+
+            .close-menu {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: transparent;
+                border: none;
+                color: #fff;
+                font-size: 1.8rem;
+                cursor: pointer;
+            }
+
+            .home__slide__text h2 {
+                font-size: 1.5rem;
+            }
+
+            .home__slide__text p {
+                font-size: 0.9rem;
+            }
+
+            .residence__text .heading {
+                font-size: 1.5rem;
+            }
+
+            .residence__text .text {
+                font-size: 0.9rem;
+            }
+
+            .destinations h1 {
+                font-size: 1.5rem;
+            }
+
+            .destinations p {
+                font-size: 0.9rem;
+            }
+
+            .card-container {
+                width: 100%;
+                max-width: 300px;
+                height: 400px;
+            }
+
+            .cards-row {
+                gap: 20px;
+            }
+
+            .nav-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                height: 60px;
+            }
+
+            .header__logo img {
+                height: 40px;
+            }
+
+            .home__slide__text {
+                padding: 1rem;
+            }
+
+            .home__slide__text h2 {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+
+            .home__slide__text p {
+                font-size: 0.85rem;
+            }
+
+            .residence__container {
+                padding: 0 1rem;
+            }
+
+            .residence__text .heading {
+                font-size: 1.3rem;
+            }
+
+            .residence__text .text {
+                font-size: 0.85rem;
+            }
+
+            .destinations {
+                padding: 60px 1rem;
+            }
+
+            .destinations h1 {
+                font-size: 1.3rem;
+            }
+
+            .destinations p {
+                font-size: 0.85rem;
+            }
+
+            .activities {
+                padding: 60px 15px;
+            }
+
+            .card-container {
+                height: 350px;
+            }
+
+            .card-back-content h3 {
+                font-size: 1.1rem;
+            }
+
+            .card-back-content p {
+                font-size: 0.85rem;
+            }
+
+            .join {
+                padding: 60px 15px;
+            }
+
+            .form input,
+            .form textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .footer {
+                padding: 30px 15px;
+            }
+
+            #scrollTopBtn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn,
+            .mobile-menu {
+                display: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .residence__content {
+                flex-direction: row;
+            }
+
+            .residence__text {
+                order: 1;
+                text-align: left;
+            }
+
+            .residence__text .heading,
+            .residence__text .text {
+                text-align: left;
+            }
+
+            .residence__image {
+                order: 2;
+            }
+
+            .footer__content {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .footer__col {
+                text-align: left;
+                align-items: flex-start;
+            }
+
+            .footer__links.social {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="header__container">
+            <div class="nav-group nav-group--wide">
+                <ul class="header__links left">
+                    <li><a href="#home" data-key="nav_home">Home</a></li>
+                    <li><a href="#residence" data-key="nav_residence">Residence</a></li>
+                    <li><a href="#destinations" data-key="nav_destinations">Destinations</a></li>
+                </ul>
+            </div>
+            <div class="header__logo">
+                <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/Copilot_20250622_132442%201.png"
+                    alt="Terra Nova" />
+            </div>
+            <div class="nav-group nav-group--narrow">
+                <ul class="header__links right">
+                    <li><a href="#activities" data-key="nav_activities">Activities</a></li>
+                    <li><a href="#fotos" data-key="nav_fotos">Fotos</a></li>
+                    <li><a href="#join" data-key="nav_join">Join</a></li>
+                    <li class="lang-switch">
+                        <button id="langToggle">EN | GR</button>
+                    </li>
+                </ul>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="ri-menu-line"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu">
+            <i class="ri-close-line"></i>
+        </button>
+        <ul class="header__links">
+            <li><a href="#home" data-key="nav_home">Home</a></li>
+            <li><a href="#residence" data-key="nav_residence">Residence</a></li>
+            <li><a href="#destinations" data-key="nav_destinations">Destinations</a></li>
+            <li><a href="#activities" data-key="nav_activities">Activities</a></li>
+            <li><a href="#fotos" data-key="nav_fotos">Fotos</a></li>
+            <li><a href="#join" data-key="nav_join">Join</a></li>
+            <li class="lang-switch">
+                <button id="langToggleMobile">EN | GR</button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Home -->
+    <section class="home section-slider" id="home">
+        <div class="section-track">
+            <div class="section-slide">
+                <div class="home__slide">
+                    <div class="home__slide__image">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/greece-tithorea-eco-farm-family-hotel-%201%20(1).png"
+                            alt="" />
+                    </div>
+                    <div class="home__slide__text animate">
+                        <h2 data-key="home1_title">Feel · Breath · Enjoy</h2>
+                        <p data-key="home1_text" data-html="1">
+                            Close your eyes. Open your heart. Take a deep breath.
+                            What do you feel? A gentle touch of the breeze… Do you hear the silence? Not only around you
+                            — but within. The quiet hush beyond the city, beyond endless thoughts.
+                            And now — listen. The soft chirping of birds. The scent of wild herbs in the air. A deep
+                            sense of calm. Life's rush stays far behind. You feel how your body lets go, how your mind
+                            softens — filling with strength and energy, gifted by nature itself.
+
+                            Just 155 kilometers from Athens and 17 kilometers from Fterolaka of Mount Parnassos, is the
+                            most picturesque village in the area — Tithorea. Near the village of Tithorea, in the valley
+                            of the Boeotian Kifissos, since 1911, on an area of 120 acres, our cozy eco farm family
+                            hotel “Terra Nova” has taken root.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-slide">
+                <div class="home__slide">
+                    <div class="home__slide__image">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/parnassus-greece2%201.png"
+                            alt="Parnassos" />
+                    </div>
+                    <div class="home__slide__text animate">
+                        <h2 data-key="home2_title">About us</h2>
+                        <p data-key="home2_text" data-html="1">
+                            We are a warm family team: mom, dad, grandma, grandpa and two kids — a 9-year-old boy and a
+                            2-year-old girl. Together we created a cozy eco-farm, where everything is filled with life,
+                            care and simple joys.
+
+                            Our farm is a place where you can relax your soul: wake up to the chirping of birds, feed
+                            goats and chickens, or just drink tea under a tree. We welcome guests with children of any
+                            age and those who travel with animals — we have enough space for both play and peace. We
+                            invite you to visit, live and feel at home. It's easy to slow down here and remember how
+                            beautiful simple things can be.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-slide">
+                <div class="home__slide">
+                    <div class="home__slide__image">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/parnassos_spring.png"
+                            alt="Spring" />
+                    </div>
+
+                    <div class="home__slide__text animate">
+                        <h2 data-key="home3_title">Tithorea</h2>
+                        <p data-key="home3_text" data-html="1">
+                            Tithorea is the center of the E-65 trail, next to the famous Kahalas gorge, where the
+                            visitor has the opportunity to admire the old watermill "Ekklisia to Mylos", through a
+                            magical route with many caves and rocks in various shapes.
+                            Entering the village, on the left, there are remains of a wall from Hellenistic times that
+                            protected the settlement. In ancient times, Tithorea was one of the most important cities of
+                            Phocis with traces of habitation since 2000 BC. Its ancient wall from the 4th century BC and
+                            its Castle, its privileged geographical position, made it the most powerful center of the
+                            ancient era.
+                            The city was destroyed twice and after its third reconstruction it acquired the beautiful
+                            walls and the name Tithorea. Look for the small chapel of Agios Ioannis Theologos. It has
+                            old frescoes but the highlight is the early Christian mosaics from the 3rd century BC. You
+                            will see them under the illuminated glass floor.
+                            Due to the simultaneous roughness and sweetness of its terrain, Odysseus Androutsos set up
+                            his headquarters here, in his famous cave, which the locals call the Black Hole. It takes an
+                            hour and a half to hike there.
+                            Androutsos settled here with his mother, his wife Eleni, his sister, captains, a guard and
+                            the English philhellene Trelawney who also brought small cannons from England. How did they
+                            all fit in? Before settling in, Androutsos had craftsmen shape the cave, which had two bays,
+                            in order to make living comfortable. It was Androutsos' base from 1822 to 1825. Many
+                            treasure hunters passed through the Cave of Dysseas, as the residents of Tithorea called it.
+                            Legends about hidden treasures by Androutsos still surround it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="nav-btn left" data-target="home">&#10094;</button>
+        <button class="nav-btn right" data-target="home">&#10095;</button>
+        <div class="dots" data-target="home"></div>
+    </section>
+
+    <!-- Residence -->
+    <section class="residence section-slider" id="residence">
+        <div class="section-track">
+            <div class="section-slide">
+                <div class="residence__container">
+                    <div class="residence__content">
+                        <div class="residence__text animate">
+                            <h1 class="heading" data-key="res1_title">Residence</h1>
+                            <p class="text" data-key="res1_text">
+                                Welcome to an elegant room where natural simplicity meets comfort and inspiration.
+                                Interior details emphasize the concept of eco-design and comfort, and a spacious window
+                                opens up to a view of nature. In our complex you will find apartments with stone
+                                finishing, a bathroom and a balcony, which can accommodate from 2 to 6 people.
+                            </p>
+                        </div>
+                        <div class="residence__image">
+                            <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/residence/big/greece-tithorea-.344%3D344png%204.png"
+                                alt="Residence" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-slide">
+                <div class="residence__container">
+                    <div class="residence__content">
+                        <div class="residence__text animate">
+                            <h1 class="heading" data-key="res2_title">Rooms</h1>
+                            <p class="text" data-key="res2_text">
+                                Two neat single beds with crisp white linens are located opposite wide glass doors,
+                                which open up to magnificent views of Mount Parnassos. We also have rooms for larger
+                                families. The largest have up to 4 single beds. If necessary, we can provide cots for
+                                children.
+                            </p>
+                        </div>
+                        <div class="residence__image">
+                            <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/refs/heads/main/img/residence/big/rooms-in-greece-tithorea-farm-family-hotel%20(1)%203.png"
+                                alt="Rooms" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-slide">
+                <div class="residence__container">
+                    <div class="residence__content">
+                        <div class="residence__text animate">
+                            <h1 class="heading" data-key="res3_title">Bath</h1>
+                            <p class="text" data-key="res3_text">
+                                The bathroom is designed in a natural style: The ceiling with wooden beams, walls made
+                                of natural stone, a stylish cabinet with two round sinks and soft lighting create an
+                                atmosphere of privacy and comfort. The room has everything for your comfortable stay:
+                                all essential items, thoughtful details and a cozy atmosphere.
+                            </p>
+                        </div>
+                        <div class="residence__image">
+                            <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/refs/heads/main/img/residence/big/bathrooms-in-greece-tithorea-farm-family-hotel%20(1)%203.png"
+                                alt="Bath" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-slide">
+                <div class="residence__container">
+                    <div class="residence__content">
+                        <div class="residence__text animate">
+                            <h1 class="heading" data-key="res4_title">Balcony</h1>
+                            <p class="text" data-key="res4_text">
+                                Each room has a balcony with a view of the mountains and the farm. You can enjoy your
+                                morning coffee or evening tea while admiring the beautiful scenery and breathing fresh
+                                mountain air.
+                            </p>
+                        </div>
+                        <div class="residence__image">
+                            <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/refs/heads/main/img/residence/big/balconies-in-greece-tithorea-farm-family-hotel%20(1)%202.png"
+                                alt="Balcony" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="nav-btn left" data-target="residence">&#10094;</button>
+        <button class="nav-btn right" data-target="residence">&#10095;</button>
+        <div class="dots" data-target="residence"></div>
+    </section>
+
+    <!-- Destinations -->
+    <section class="destinations" id="destinations">
+        <div class="animate">
+            <h1 data-key="dest_title">Destinations</h1>
+            <p data-key="dest_text" data-html="1">
+                The farm is located in the valley of the Boeotian Kifissos, at the foot of Mount Parnassos, 155 km from
+                Athens and 17 km from Fterolaka of Mount Parnassos. The area is rich in historical and natural
+                attractions. Nearby you can visit:
+                <br><br>
+                • The famous Kahalas gorge with the old watermill "Ekklisia to Mylos"<br>
+                • The ancient city of Tithorea with remains from Hellenistic times<br>
+                • The chapel of Agios Ioannis Theologos with early Christian mosaics<br>
+                • The cave of Odysseus Androutsos, a hero of the Greek Revolution<br>
+                • The archaeological site of Delphi (just 30 km away)<br>
+                • The ski resort of Parnassos (in winter)<br>
+                • The picturesque villages of Arachova and Distomo<br>
+                • The monastery of Osios Loukas (UNESCO World Heritage Site)<br>
+                <br>
+                Our location makes us an ideal base for exploring Central Greece, with easy access to both mountain
+                activities and coastal destinations.
+            </p>
+        </div>
+    </section>
+
+    <!-- Activities -->
+    <section class="activities" id="activities">
+        <div class="cards-row">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-face card-front">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/activities/activities-in-greece-tithorea-farm-family-hotel%20(1)%201.png"
+                            alt="Hiking" />
+                        <div class="card_caption" data-key="act1_title">Hiking</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-content">
+                            <h3 data-key="act1_title">Hiking</h3>
+                            <p data-key="act1_text">
+                                Explore the beautiful trails around Mount Parnassos. We offer guided hikes for all
+                                levels, from easy walks to challenging mountain treks. Discover hidden paths, ancient
+                                ruins, and breathtaking views.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-face card-front">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/activities/activities-in-greece-tithorea-farm-family-hotel%20(1)%202.png"
+                            alt="Farm Activities" />
+                        <div class="card_caption" data-key="act2_title">Farm Activities</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-content">
+                            <h3 data-key="act2_title">Farm Activities</h3>
+                            <p data-key="act2_text">
+                                Experience authentic farm life. Help feed the animals, collect fresh eggs, learn about
+                                organic farming, and participate in seasonal activities. Perfect for families with
+                                children!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-face card-front">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/activities/activities-in-greece-tithorea-farm-family-hotel%20(1)%203.png"
+                            alt="Cooking Classes" />
+                        <div class="card_caption" data-key="act3_title">Cooking Classes</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-content">
+                            <h3 data-key="act3_title">Cooking Classes</h3>
+                            <p data-key="act3_text">
+                                Learn to prepare traditional Greek dishes using fresh ingredients from our farm. Our
+                                cooking classes are hands-on experiences that end with a delicious meal enjoyed
+                                together.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-face card-front">
+                        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/activities/activities-in-greece-tithorea-farm-family-hotel%20(1)%204.png"
+                            alt="Yoga & Meditation" />
+                        <div class="card_caption" data-key="act4_title">Yoga & Meditation</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-content">
+                            <h3 data-key="act4_title">Yoga & Meditation</h3>
+                            <p data-key="act4_text">
+                                Reconnect with yourself in our peaceful natural setting. Join our daily yoga and
+                                meditation sessions suitable for all levels, held in our outdoor studio with mountain
+                                views.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fotos -->
+    <section class="fotos" id="fotos">
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%201.png"
+            alt="Farm View 1" />
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%202.png"
+            alt="Farm View 2" />
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%203.png"
+            alt="Farm View 3" />
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%204.png"
+            alt="Farm View 4" />
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%205.png"
+            alt="Farm View 5" />
+        <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/fotos/fotos-in-greece-tithorea-farm-family-hotel%20(1)%206.png"
+            alt="Farm View 6" />
+    </section>
+
+    <!-- Join -->
+    <section class="join" id="join">
+        <div class="join__content animate">
+            <h1 data-key="join_title">Join Us</h1>
+            <form class="form" id="joinForm">
+                <input type="text" placeholder="Name" required data-key="join_name" />
+                <input type="email" placeholder="Email" required data-key="join_email" />
+                <input type="tel" placeholder="Phone" data-key="join_phone" />
+                <textarea placeholder="Message" rows="4" data-key="join_message"></textarea>
+                <button type="submit" data-key="join_submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__col">
+                <div class="footer__logo">
+                    <img src="https://raw.githubusercontent.com/KarinaR-Ch/Terra-Nova/main/img/Copilot_20250622_132442%201.png"
+                        alt="Terra Nova" />
+                </div>
+            </div>
+            <div class="footer__col">
+                <ul class="footer__links">
+                    <li><a href="#home" data-key="nav_home">Home</a></li>
+                    <li><a href="#residence" data-key="nav_residence">Residence</a></li>
+                    <li><a href="#destinations" data-key="nav_destinations">Destinations</a></li>
+                    <li><a href="#activities" data-key="nav_activities">Activities</a></li>
+                    <li><a href="#fotos" data-key="nav_fotos">Fotos</a></li>
+                    <li><a href="#join" data-key="nav_join">Join</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <ul class="footer__links social">
+                    <li>
+                        <a href="#"><i class="ri-facebook-fill"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="ri-instagram-line"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="ri-twitter-x-line"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="ri-youtube-line"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Terra Nova. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2 data-key="modal_title">Thank You!</h2>
+            <p data-key="modal_text">Your message has been sent successfully. We will contact you soon.</p>
+            <button id="modalCloseBtn" data-key="modal_button">OK</button>
+        </div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button id="scrollTopBtn">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <script>
+        // Language data
+        const translations = {
+            en: {
+                nav_home: "Home",
+                nav_residence: "Residence",
+                nav_destinations: "Destinations",
+                nav_activities: "Activities",
+                nav_fotos: "Fotos",
+                nav_join: "Join",
+                home1_title: "Feel · Breath · Enjoy",
+                home1_text: "Close your eyes. Open your heart. Take a deep breath. What do you feel? A gentle touch of the breeze… Do you hear the silence? Not only around you — but within. The quiet hush beyond the city, beyond endless thoughts. And now — listen. The soft chirping of birds. The scent of wild herbs in the air. A deep sense of calm. Life's rush stays far behind. You feel how your body lets go, how your mind softens — filling with strength and energy, gifted by nature itself. Just 155 kilometers from Athens and 17 kilometers from Fterolaka of Mount Parnassos, is the most picturesque village in the area — Tithorea. Near the village of Tithorea, in the valley of the Boeotian Kifissos, since 1911, on an area of 120 acres, our cozy eco farm family hotel “Terra Nova” has taken root.",
+                home2_title: "About us",
+                home2_text: "We are a warm family team: mom, dad, grandma, grandpa and two kids — a 9-year-old boy and a 2-year-old girl. Together we created a cozy eco-farm, where everything is filled with life, care and simple joys. Our farm is a place where you can relax your soul: wake up to the chirping of birds, feed goats and chickens, or just drink tea under a tree. We welcome guests with children of any age and those who travel with animals — we have enough space for both play and peace. We invite you to visit, live and feel at home. It's easy to slow down here and remember how beautiful simple things can be.",
+                home3_title: "Tithorea",
+                home3_text: "Tithorea is the center of the E-65 trail, next to the famous Kahalas gorge, where the visitor has the opportunity to admire the old watermill \"Ekklisia to Mylos\", through a magical route with many caves and rocks in various shapes. Entering the village, on the left, there are remains of a wall from Hellenistic times that protected the settlement. In ancient times, Tithorea was one of the most important cities of Phocis with traces of habitation since 2000 BC. Its ancient wall from the 4th century BC and its Castle, its privileged geographical position, made it the most powerful center of the ancient era. The city was destroyed twice and after its third reconstruction it acquired the beautiful walls and the name Tithorea. Look for the small chapel of Agios Ioannis Theologos. It has old frescoes but the highlight is the early Christian mosaics from the 3rd century BC. You will see them under the illuminated glass floor. Due to the simultaneous roughness and sweetness of its terrain, Odysseus Androutsos set up his headquarters here, in his famous cave, which the locals call the Black Hole. It takes an hour and a half to hike there. Androutsos settled here with his mother, his wife Eleni, his sister, captains, a guard and the English philhellene Trelawney who also brought small cannons from England. How did they all fit in? Before settling in, Androutsos had craftsmen shape the cave, which had two bays, in order to make living comfortable. It was Androutsos' base from 1822 to 1825. Many treasure hunters passed through the Cave of Dysseas, as the residents of Tithorea called it. Legends about hidden treasures by Androutsos still surround it.",
+                res1_title: "Residence",
+                res1_text: "Welcome to an elegant room where natural simplicity meets comfort and inspiration. Interior details emphasize the concept of eco-design and comfort, and a spacious window opens up to a view of nature. In our complex you will find apartments with stone finishing, a bathroom and a balcony, which can accommodate from 2 to 6 people.",
+                res2_title: "Rooms",
+                res2_text: "Two neat single beds with crisp white linens are located opposite wide glass doors, which open up to magnificent views of Mount Parnassos. We also have rooms for larger families. The largest have up to 4 single beds. If necessary, we can provide cots for children.",
+                res3_title: "Bath",
+                res3_text: "The bathroom is designed in a natural style: The ceiling with wooden beams, walls made of natural stone, a stylish cabinet with two round sinks and soft lighting create an atmosphere of privacy and comfort. The room has everything for your comfortable stay: all essential items, thoughtful details and a cozy atmosphere.",
+                res4_title: "Balcony",
+                res4_text: "Each room has a balcony with a view of the mountains and the farm. You can enjoy your morning coffee or evening tea while admiring the beautiful scenery and breathing fresh mountain air.",
+                dest_title: "Destinations",
+                dest_text: "The farm is located in the valley of the Boeotian Kifissos, at the foot of Mount Parnassos, 155 km from Athens and 17 km from Fterolaka of Mount Parnassos. The area is rich in historical and natural attractions. Nearby you can visit:<br><br>• The famous Kahalas gorge with the old watermill \"Ekklisia to Mylos\"<br>• The ancient city of Tithorea with remains from Hellenistic times<br>• The chapel of Agios Ioannis Theologos with early Christian mosaics<br>• The cave of Odysseus Androutsos, a hero of the Greek Revolution<br>• The archaeological site of Delphi (just 30 km away)<br>• The ski resort of Parnassos (in winter)<br>• The picturesque villages of Arachova and Distomo<br>• The monastery of Osios Loukas (UNESCO World Heritage Site)<br><br>Our location makes us an ideal base for exploring Central Greece, with easy access to both mountain activities and coastal destinations.",
+                act1_title: "Hiking",
+                act1_text: "Explore the beautiful trails around Mount Parnassos. We offer guided hikes for all levels, from easy walks to challenging mountain treks. Discover hidden paths, ancient ruins, and breathtaking views.",
+                act2_title: "Farm Activities",
+                act2_text: "Experience authentic farm life. Help feed the animals, collect fresh eggs, learn about organic farming, and participate in seasonal activities. Perfect for families with children!",
+                act3_title: "Cooking Classes",
+                act3_text: "Learn to prepare traditional Greek dishes using fresh ingredients from our farm. Our cooking classes are hands-on experiences that end with a delicious meal enjoyed together.",
+                act4_title: "Yoga & Meditation",
+                act4_text: "Reconnect with yourself in our peaceful natural setting. Join our daily yoga and meditation sessions suitable for all levels, held in our outdoor studio with mountain views.",
+                join_title: "Join Us",
+                join_name: "Name",
+                join_email: "Email",
+                join_phone: "Phone",
+                join_message: "Message",
+                join_submit: "Send Message",
+                modal_title: "Thank You!",
+                modal_text: "Your message has been sent successfully. We will contact you soon.",
+                modal_button: "OK"
+            },
+            gr: {
+                nav_home: "Αρχική",
+                nav_residence: "Διαμονή",
+                nav_destinations: "Προορισμοί",
+                nav_activities: "Δραστηριότητες",
+                nav_fotos: "Φωτογραφίες",
+                nav_join: "Επικοινωνία",
+                home1_title: "Αίσθηση · Ανάσα · Απόλαυση",
+                home1_text: "Κλείστε τα μάτια σας. Ανοίξτε την καρδιά σας. Πάρτε μια βαθιά ανάσα. Τι αισθάνεστε; Μια απαλή πνοή του αέρα… Ακούτε τη σιωπή; Όχι μόνο γύρω σας — αλλά και μέσα σας. Η ησυχία πέρα από την πόλη, πέρα από τις ατελείωτες σκέψεις. Και τώρα — ακούστε. Το απαλό κελάηδημα των πουλιών. Η μυρωδιά των αγρίων βοτάνων στον αέρα. Μια βαθιά αίσθηση ηρεμίας. Η βιασύνη της ζωής μένει πολύ πίσω. Αισθάνεστε το σώμα σας να χαλαρώνει, το μυαλό σας να απαλύνει — γεμίζοντας με δύναμη και ενέργεια, δώρο της ίδιας της φύσης. Μόλις 155 χιλιόμετρα από την Αθήνα και 17 χιλιόμετρα από το Φτερόλακα του Παρνασσού, βρίσκεται το πιο γραφικό χωριό της περιοχής — η Τιθόρεια. Κοντά στο χωριό Τιθόρεια, στην κοιλάδα του Βοιωτικού Κηφισού, από το 1911, σε μια έκταση 120 στρεμμάτων, έχει ριζώσει το ζεστό οικο-αγροτικό οικογενειακό μας ξενοδοχείο «Terra Nova».",
+                home2_title: "Σχετικά με εμάς",
+                home2_text: "Είμαστε μια ζεστή οικογενειακή ομάδα: μαμά, μπαμπάς, γιαγιά, παππούς και δύο παιδιά — ένα αγόρι 9 ετών και ένα κορίτσι 2 ετών. Μαζί δημιουργήσαμε ένα ζεστό οικο-αγρόκτημα, όπου όλα είναι γεμάτα ζωή, φροντίδα και απλές χαρές. Το αγρόκτημά μας είναι ένα μέρος όπου μπορείτε να χαλαρώσετε την ψυχή σας: ξυπνήστε με το κελάηδημα των πουλιών, ταΐστε κατσίκες και κοτόπουλα, ή απλά πιείτε τσάι κάτω από ένα δέντρο. Καλωσορίζουμε επισκέπτες με παιδιά κάθε ηλικίας και όσους ταξιδεύουν με ζώα — έχουμε αρκετό χώρο τόσο για παιχνίδι όσο και για ηρεμία. Σας προσκαλούμε να επισκεφτείτε, να ζήσετε και να νιώσετε σαν στο σπίτι σας. Εδώ είναι εύκολο να επιβραδύνετε και να θυμάστε πόσο όμορφα μπορούν να είναι τα απλά πράγματα.",
+                home3_title: "Τιθόρεια",
+                home3_text: "Η Τιθόρεια είναι το κέντρο του μονοπατιού Ε-65, δίπλα στο διάσημο φαράγγι του Καχαλά, όπου ο επισκέπτης έχει την ευκαιρία να θαυμάσει το παλιό νερόμυλο «Εκκλησία του Μύλου», μέσα από μια μαγική διαδρομή με πολλές σπηλιές και βράχους σε διάφορα σχήματα. Μπαίνοντας στο χωριό, στα αριστερά, υπάρχουν ερείπια ενός τείχους από ελληνιστικούς χρόνους που προστάτευε τον οικισμό. Στην αρχαιότητα, η Τιθόρεια ήταν μια από τις πιο σημαντικές πόλεις της Φωκίδας με ίχνη κατοίκησης από το 2000 π.Χ. Το αρχαίο της τείχος από τον 4ο αιώνα π.Χ. και το Κάστρο της, η προνομιακή γεωγραφική της θέση, την κατέστησαν το πιο ισχυρό κέντρο της αρχαίας εποχής. Η πόλη καταστράφηκε δύο φορές και μετά την τρίτη της ανακατασκευή απέκτησε τα όμορφα τείχη και το όνομα Τιθόρεια. Ψάξτε για το μικρό παρεκκλήσι του Αγίου Ιωάννη του Θεολόγου. Έχει παλιές τοιχογραφίες αλλά το αξιοθέατο είναι τα παλαιοχριστιανικά ψηφιδωτά από τον 3ο αιώνα π.Χ. Θα τα δείτε κάτω από το φωτισμένο γυάλινο πάτωμα. Λόγω της ταυτόχρονης τραχύτητας και γλυκύτητας του εδάφους της, ο Οδυσσέας Ανδρούτσος εγκατέστησε το αρχηγείο του εδώ, στο διάσημο σπήλαιό του, που οι ντόπιοι ονομάζουν Μαύρη Τρύπα. Χρειάζεται μιάμιση ώρα για να περπατήσετε εκεί. Ο Ανδρούτσος εγκαταστάθηκε εδώ με τη μητέρα του, τη γυναίκα του Ελένη, την αδελφή του, καπεταναίους, έναν φρουρό και τον Άγγλο φιλέλληνα Trelawney που έφερε και μικρά κανόνια από την Αγγλία. Πώς χώρεσαν όλοι; Πριν εγκατασταθεί, ο Ανδρούτσος είχε τεχνίτες να διαμορφώσουν το σπήλαιο, που είχε δύο κόλπους, για να γίνει η διαβίωση άνετη. Ήταν η βάση του Ανδρούτσου από το 1822 έως το 1825. Πολλοί θησαυροθήρες πέρασαν από το Σπήλαιο του Δυσσέα, όπως το αποκαλούσαν οι κάτοικοι της Τιθόρειας. Θρύλοι για κρυμμένους θησαυρούς από τον Ανδρούτσο ακόμα τον περιβάλλουν.",
+                res1_title: "Διαμονή",
+                res1_text: "Καλωσορίσατε σε ένα κομψό δωμάτιο όπου η φυσική απλότητα συναντά την άνεση και την έμπνευση. Λεπτομέρειες εσωτερικού τονίζουν την έννοια του οικο-σχεδιασμού και της άνεσης, και ένας ευρύχωρος καθρέπτης ανοίγει σε μια θέα της φύσης. Στο συγκρότημά μας θα βρείτε διαμερίσματα με πέτρινη επένδυση, μπάνιο και μπαλκόνι, που μπορούν να φιλοξενήσουν από 2 έως 6 άτομα.",
+                res2_title: "Δωμάτια",
+                res2_text: "Δύο τακτοποιημένα μονά κρεβάτια με τραγανά λευκά σεντόνια βρίσκονται απέναντι από φαρδιές γυάλινες πόρτες, που ανοίγουν σε μαγευτικές θέας του Παρνασσού. Έχουμε επίσης δωμάτια για μεγαλύτερες οικογένειες. Τα μεγαλύτερα έχουν έως και 4 μονά κρεβάτια. Αν χρειαστεί, μπορούμε να παρέχουμε κούνιες για παιδιά.",
+                res3_title: "Μπάνιο",
+                res3_text: "Το μπάνιο είναι σχεδιασμένο σε φυσικό στυλ: Η οροφή με ξύλινες δοκούς, τοίχοι από φυσική πέτρα, ένα στυλικό ντουλάπι με δύο στρογγυλά νιπτήρες και απαλό φωτισμό δημιουργούν μια ατμόσφαιρα ιδιωτικότητας και άνεσης. Το δωμάτιο διαθέτει όλα όσα χρειάζεστε για την άνετη διαμονή σας: όλα τα απαραίτητα αντικείμενα, προσεγμένες λεπτομέρειες και μια ζεστή ατμόσφαιρα.",
+                res4_title: "Μπαλκόνι",
+                res4_text: "Κάθε δωμάτιο διαθέτει μπαλκόνι με θέα στα βουνά και το αγρόκτημα. Μπορείτε να απολαύσετε τον πρωινό σας καφέ ή το βραδινό σας τσάι ενώ θαυμάζετε τα όμορφα τοπία και αναπνέετε φρέσκο βουνίσιο αέρα.",
+                dest_title: "Προορισμοί",
+                dest_text: "Το αγρόκτημα βρίσκεται στην κοιλάδα του Βοιωτικού Κηφισού, στους πρόποδες του Παρνασσού, 155 χλμ από την Αθήνα και 17 χλμ από το Φτερόλακα του Παρνασσού. Η περιοχή είναι πλούσια σε ιστορικά και φυσικά αξιοθέατα. Κοντά μπορείτε να επισκεφτείτε:<br><br>• Το διάσημο φαράγγι Καχαλά με τον παλιό νερόμυλο «Εκκλησία του Μύλου»<br>• Η αρχαία πόλη Τιθόρεια με λείψανα από ελληνιστικούς χρόνους<br>• Το παρεκκλήσι του Αγίου Ιωάννη του Θεολόγου με παλαιοχριστιανικά ψηφιδωτά<br>• Το σπήλαιο του Οδυσσέα Ανδρούτσου, ενός ήρωα της Ελληνικής Επανάστασης<br>• Ο αρχαιολογικός χώρος των Δελφών (μόλις 30 χλμ)<br>• Το χιονοδρομικό κέντρο του Παρνασσού (τον χειμώνα)<br>• Τα γραφικά χωριά Αράχωβα και Δίστομο<br>• Η μονή του Οσίου Λουκά (Μνημείο Παγκόσμιας Κληρονομιάς της UNESCO)<br><br>Η τοποθεσία μας μας καθιστά μια ιδανική βάση για την εξερεύνηση της Κεντρικής Ελλάδας, με εύκολη πρόσβαση τόσο σε βουνίσιες δραστηριότητες όσο και σε παραθαλάσσιους προορισμούς.",
+                act1_title: "Πεζοπορία",
+                act1_text: "Εξερευνήστε τα όμορφα μονοπάτια γύρω από τον Παρνασσό. Προσφέρουμε οδηγούμενες πεζοπορίες για όλα τα επίπεδα, από εύκολους περιπάτους έως απαιτητικά βουνίσια ταξίδια. Ανακαλύψτε κρυφά μονοπάτια, αρχαία ερείπια και εντυπωσιακές θέας.",
+                act2_title: "Δραστηριότητες Αγροκτήματος",
+                act2_text: "Βιώστε την αυθεντική αγροτική ζωή. Βοηθήστε να ταΐσετε τα ζώα, μαζέψτε φρέσκα αυγά, μάθετε για τη βιολογική γεωργία και συμμετέχετε σε εποχιακές δραστηριότητες. Ιδανικό για οικογένειες με παιδιά!",
+                act3_title: "Μαθήματα Μαγειρικής",
+                act3_text: "Μάθετε να προετοιμάζετε παραδοσιακά ελληνικά πιάτα χρησιμοποιώντας φρέσκες πρώτες ύλες από το αγρόκτημά μας. Τα μαθήματα μαγειρικής μας είναι πρακτικές εμπειρίες που τελειώνουν με ένα νόστιμο γεύμα που απολαμβάνουμε μαζί.",
+                act4_title: "Γιόγκα & Διαλογισμός",
+                act4_text: "Επανασυνδεθείτε με τον εαυτό σας στην ειρηνική φυσική μας ρύθμιση. Συμμετέχετε στις καθημερινές συνεδρίες γιόγκα και διαλογισμού κατάλληλες για όλα τα επίπεδα, που πραγματοποιούνται στο εξωτερικό μας στούντιο με θέα στο βουνό.",
+                join_title: "Επικοινωνία",
+                join_name: "Όνομα",
+                join_email: "Email",
+                join_phone: "Τηλέφωνο",
+                join_message: "Μήνυμα",
+                join_submit: "Αποστολή Μηνύματος",
+                modal_title: "Ευχαριστούμε!",
+                modal_text: "Το μήνυμά σας εστάλη με επιτυχία. Θα επικοινωνήσουμε μαζί σας σύντομα.",
+                modal_button: "OK"
+            }
+        };
+
+        // Current language
+        let currentLang = 'en';
+
+        // Function to change language
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    if (element.hasAttribute('data-html')) {
+                        element.innerHTML = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            const newLang = currentLang === 'en' ? 'gr' : 'en';
+            changeLanguage(newLang);
+        }
+
+        // Initialize language
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set up language toggle buttons
+            document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+            document.getElementById('langToggleMobile').addEventListener('click', toggleLanguage);
+
+            // Initialize animations
+            initAnimations();
+
+            // Initialize sliders
+            initSliders();
+
+            // Initialize card flips
+            initCards();
+
+            // Initialize form submission
+            initForm();
+
+            // Initialize mobile menu
+            initMobileMenu();
+
+            // Initialize scroll events
+            initScrollEvents();
+        });
+
+        // Animation on scroll
+        function initAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+        }
+
+        // Slider functionality
+        function initSliders() {
+            const sliders = document.querySelectorAll('.section-slider');
+
+            sliders.forEach(slider => {
+                const track = slider.querySelector('.section-track');
+                const slides = slider.querySelectorAll('.section-slide');
+                const prevBtn = slider.querySelector('.nav-btn.left');
+                const nextBtn = slider.querySelector('.nav-btn.right');
+                const dotsContainer = slider.querySelector('.dots');
+                let currentIndex = 0;
+
+                // Create dots
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => goToSlide(i));
+                    dotsContainer.appendChild(dot);
+                });
+
+                const dots = dotsContainer.querySelectorAll('.dot');
+
+                // Update slider position
+                function updateSlider() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+                }
+
+                // Go to specific slide
+                function goToSlide(index) {
+                    currentIndex = index;
+                    updateSlider();
+                }
+
+                // Next slide
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateSlider();
+                }
+
+                // Previous slide
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    updateSlider();
+                }
+
+                // Event listeners
+                if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+                if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+                // Auto-slide for home slider only
+                if (slider.id === 'home') {
+                    setInterval(nextSlide, 5000);
+                }
+            });
+        }
+
+        // Card flip functionality
+        function initCards() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+        }
+
+        // Form submission
+        function initForm() {
+            const form = document.getElementById('joinForm');
+            const modal = document.getElementById('successModal');
+            const closeBtn = document.getElementById('modalCloseBtn');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                modal.classList.add('show');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+                form.reset();
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    form.reset();
+                }
+            });
+        }
+
+        // Mobile menu
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const closeMenuBtn = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuLinks = mobileMenu.querySelectorAll('a');
+
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeMenuBtn.addEventListener('click', closeMenu);
+            menuLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Scroll events
+        function initScrollEvents() {
+            const header = document.querySelector('.header');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            window.addEventListener('scroll', () => {
+                // Header background on scroll
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                // Scroll to top button
+                if (window.scrollY > 500) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerHeight = document.querySelector('.header').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Scroll to top functionality
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
